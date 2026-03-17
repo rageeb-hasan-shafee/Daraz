@@ -1,19 +1,14 @@
 const express = require('express');
-const { Pool } = require('pg');
+const pool = require('./config/db');
+const productRoute = require('./routes/productRoute');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Database connection pool (no API routes yet, just initializing the server)
-const pool = new Pool({
-    user: process.env.DB_USER || 'postgres',
-    host: process.env.DB_HOST || 'localhost',
-    database: process.env.DB_NAME || 'daraz_db',
-    password: process.env.DB_PASSWORD || 'password',
-    port: process.env.DB_PORT || 5432,
-});
+// Routes
+app.use('/api/products', productRoute);
 
 app.get('/health', async (req, res) => {
     try {
